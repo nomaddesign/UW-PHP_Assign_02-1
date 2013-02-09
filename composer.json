@@ -1,0 +1,29 @@
+{
+    "name": "jasonBall/config-reader",
+    "description": "Simple Config reader to parse ini and csv config files",
+    "type": "library",
+    "description": "DB Wrapper",
+    "keywords": ["DB","wrapper"],
+    "homepage": "https://github.com/nomaddesign/UW-PHP_Assign_01-2",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jason Ball",
+            "email": "nomaddesign@gmail.com"
+        }
+    ],
+    "require": {
+        "phpunit/phpunit": "3.7.10",
+        "php": ">=5.3.*"
+    },
+    "autoload": {
+        "psr-0": {
+            "ConfigReader": "Src/",
+            "Tests\\ConfigReader": "Tests/"
+        }
+    },
+    "config": {
+        "vendor-dir" : "Vendors",
+        "vendor-bin" : "Vendors/bin"
+    }
+}
