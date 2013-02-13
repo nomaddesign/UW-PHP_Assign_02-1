@@ -10,26 +10,40 @@ class DbAccess extends PDO {
 	private $database;
 	private $username;
 	private $password;
+	private $db_engine;
+	private	$db_file;
 	private $rows;
 	public $result;
 	
-	public function __construct($hostname, $database, $username, $password) {
-		$this->hostname = $hostname;
-		$this->database = $database;
-		$this->username = $username;
-		$this->password = $password;
+	public function __construct($db_connect) {
+		$this->db_engine = $db_connect['db_engine'];
+		$this->db_file = $db_connect['db_file'];
+		$this->hostname = $db_connect['hostname'];
+		$this->database = $db_connect['database'];
+		$this->username = $db_connect['username'];
+		$this->password = $db_connect['password'];
 	}
 	
 	// connect to the database
 	public function connect(){
 		try {
-			# MySQL with PDO_MYSQL  
-			$this->dbh = new PDO("mysql:host=$this->hostname;dbname=$this->database", $this->username, $this->password );
-				
+			if ($this->db_engine == 'mysql'){
+				# MySQL with PDO_MYSQL  
+				$this->dbh = new PDO("mysql:host=$this->hostname;dbname=$this->database", $this->username, $this->password );
+			} 
+/*
+			elseif ($this->db_engine == 'sqllite' && $this->dbfile != null){
+				# SQLlite with PDO_SQLlite
+				$this->dbh = new PDO('sqlite:'.this->dbfile);
+			} else {
+			 throw new Exception('DB Engine Error');
+			}
+*/
+			
 			#Set Error Mode
 			$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
 				
-		} catch(\RuntimeException $e) {
+		} catch(\PDOException $e) {
 		    die( 'Failed to establish database connection, error:'. $e->getMessage() );
 		}// END Try/Catch	  
 	}
@@ -47,7 +61,7 @@ class DbAccess extends PDO {
 			while ($row = $statement->fetch()){
 				array_push($results, $row);
 			}
-		} catch(\RuntimeException $e) {
+		} catch(\PDOExceptionn $e) {
 		    die( 'Failed to select record(s):'. $e->getMessage() );
 		}// END Try/Catch
 		
@@ -58,7 +72,7 @@ class DbAccess extends PDO {
 	public function update($query) {
 		try {
 			$updateResult = $this->dbh->exec($query);
-		} catch(\RuntimeException $e) {
+		} catch(\PDOException $e) {
 		    die( 'Failed to update record:'. $e->getMessage() );
 		}// END Try/Catch
 		
@@ -69,7 +83,7 @@ class DbAccess extends PDO {
 	public function delete($query) {
 		try {
 			$deleteResult = $this->dbh->exec($query);
-		} catch(\RuntimeException $e) {
+		} catch(\PDOException $e) {
 		    die( 'Failed to delete record:'. $e->getMessage() );
 		}// END Try/Catch
 		
@@ -81,7 +95,7 @@ class DbAccess extends PDO {
 		try {
 			$num = $this->dbh->exec($query);
 			$insertResultID = $this->dbh->lastInsertId();
-		} catch(\RuntimeException $e) {
+		} catch(\PDOException $e) {
 	    	die( 'Failed to update record:'. $e->getMessage() );
 		}// END Try/Catch
 		
@@ -93,7 +107,7 @@ class DbAccess extends PDO {
 		# close the connection
 		try {
 			$this->dbh = null;
-		} catch(\RuntimeException $e) {
+		} catch(\PDOException $e) {
 		    die( 'Failed to close connection:'. $e->getMessage() );
 		}
 	}

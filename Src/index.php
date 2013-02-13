@@ -9,10 +9,9 @@ ini_set('display_startup_errors','On');
 
 require_once ('../Bootstrap.php');
 
-//require_once ('db/DbAccess.php');
+require_once ('db/config.php');
 
-
-$db = new db\DbAccess('127.0.0.1','assn2','mcdata','ci5ku6zu0show');
+$db = new db\DbAccess($db_config);
 
 // connect to database
 $db->connect();
