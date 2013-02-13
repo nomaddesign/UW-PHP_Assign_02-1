@@ -4,7 +4,7 @@ namespace db;
 
 use \PDO as PDO;
 
-class jDBAL extends PDO {
+class DbAccess extends PDO {
 	
 	private $hostname;
 	private $database;

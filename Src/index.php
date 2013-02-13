@@ -1,8 +1,5 @@
 <?php
 
-namespace db;
-
-
 
 $e = null;
 
@@ -12,39 +9,28 @@ ini_set('display_startup_errors','On');
 
 require_once ('../Bootstrap.php');
 
-require_once ('db/jDBAL.php');
+//require_once ('db/DbAccess.php');
 
-echo " Hello World";
 
-$db = new jDBAL('127.0.0.1','assn2','mcdata','ci5ku6zu0show');
+$db = new db\DbAccess('127.0.0.1','assn2','mcdata','ci5ku6zu0show');
 
-// connect to database, expect to
-try {
-    $db->connect();
-} catch(\RuntimeException $e) {
-    die( 'fails to establish database connection, error:'. $e->getMessage() );
-    
-}
+// connect to database
+$db->connect();
 
-echo $e;
-
-//$db->disconnect();
-
+//
 $insertSql = "INSERT INTO User (firstname, lastname) VALUES ('Bob', 'Smith')";
 $rowId = $db->insert($insertSql);
 
-echo $rowId;
-
-$id = array(5,7,9,11,13); 
-
+//
 $newRow = $db->select(sprintf("SELECT * FROM User WHERE id = %d", $rowId ));
+
+//Destruct DB Connection
+$db->disconnect();
 
 \var_dump ($newRow);
 
 // Should have at least one row
 assert(count($newRow) > 0);
-
-
 
 
 ?>
