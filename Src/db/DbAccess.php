@@ -27,18 +27,14 @@ class DbAccess extends PDO {
 	// connect to the database
 	public function connect(){
 		try {
-			if ($this->db_engine == 'mysql'){
+			if ($this->db_engine === 'mysql'){
 				# MySQL with PDO_MYSQL  
 				$this->dbh = new PDO("mysql:host=$this->hostname;dbname=$this->database", $this->username, $this->password );
 			} 
-/*
-			elseif ($this->db_engine == 'sqllite' && $this->dbfile != null){
+			elseif ($this->db_engine === 'sqllite'){
 				# SQLlite with PDO_SQLlite
-				$this->dbh = new PDO('sqlite:'.this->dbfile);
-			} else {
-			 throw new Exception('DB Engine Error');
-			}
-*/
+				$this->dbh = new PDO('sqlite:assignment2.db');
+			} 
 			
 			#Set Error Mode
 			$this->dbh->setAttribute( PDO::ATTR_ERRMODE, PDO::ERRMODE_WARNING );
